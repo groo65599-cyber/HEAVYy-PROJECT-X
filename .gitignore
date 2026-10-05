@@ -1,0 +1,40 @@
+# ---- .NET / build output ----
+bin/
+obj/
+publish/
+publish-selfcontained/
+dist/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ---- Visual Studio / Rider / VS Code ----
+.vs/
+.idea/
+.vscode/
+*.rsuser
+
+# ---- Build logs / NuGet ----
+*.binlog
+*.log
+project.lock.json
+project.fragment.lock.json
+
+# ---- Test / coverage ----
+TestResults/
+[Cc]overage/
+*.coverage
+*.coveragexml
+
+# ---- Installer artifacts ----
+installer/redist/*.exe
+*.iss.bak
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Local runtime data (never commit user data) ----
+*.pdb

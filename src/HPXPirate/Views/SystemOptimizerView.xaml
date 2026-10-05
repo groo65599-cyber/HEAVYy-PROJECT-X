@@ -1,0 +1,133 @@
+<UserControl x:Class="HPXPirate.Views.SystemOptimizerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="{StaticResource Font.Primary}">
+
+    <Grid Margin="24,20,24,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Windows Optimizer" Style="{StaticResource H1}" />
+            <TextBlock Text="Safe, reversible tweaks. Every change is logged and can be undone. System and security processes are never touched."
+                       Style="{StaticResource Caption}" Margin="0,2,0,16" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Processes -->
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,7,7">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <TextBlock Text="PROCESS MANAGER" Style="{StaticResource MetricLabel}" VerticalAlignment="Center" />
+                        <Button Style="{StaticResource GhostButton}" Content="Refresh" HorizontalAlignment="Right"
+                                Command="{Binding RefreshCommand}" />
+                    </Grid>
+                    <DataGrid Grid.Row="1" Margin="0,10,0,10" ItemsSource="{Binding Processes}"
+                              SelectedItem="{Binding SelectedProcess}" AutoGenerateColumns="False" IsReadOnly="True"
+                              HeadersVisibility="Column" Background="Transparent" RowBackground="Transparent"
+                              AlternatingRowBackground="#0AFFFFFF" BorderThickness="0"
+                              Foreground="{StaticResource Brush.Text.Primary}" GridLinesVisibility="Horizontal"
+                              HorizontalGridLinesBrush="{StaticResource Brush.Border}" FontFamily="{StaticResource Font.Primary}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Process" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="PID" Binding="{Binding Pid}" Width="60" />
+                            <DataGridTextColumn Header="CPU %" Binding="{Binding CpuPercent, StringFormat={}{0:0.0}}" Width="70" />
+                            <DataGridTextColumn Header="RAM MB" Binding="{Binding RamMb, StringFormat={}{0:0}}" Width="80" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <Button Style="{StaticResource PrimaryButton}" Content="SET BELOW-NORMAL PRIORITY"
+                                Command="{Binding OptimizeProcessCommand}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Startup apps -->
+            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource Card}" Margin="7,0,0,7">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="STARTUP APPS (READ-ONLY VIEW)" Style="{StaticResource MetricLabel}" />
+                    <DataGrid Grid.Row="1" Margin="0,10,0,0" ItemsSource="{Binding StartupEntries}"
+                              AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column"
+                              Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="#0AFFFFFF"
+                              BorderThickness="0" Foreground="{StaticResource Brush.Text.Primary}"
+                              GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource Brush.Border}"
+                              FontFamily="{StaticResource Font.Primary}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="120" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <!-- Change log / rollback -->
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource Card}" Margin="0,7,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <TextBlock Text="CHANGE LOG &amp; ROLLBACK" Style="{StaticResource MetricLabel}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Style="{StaticResource GhostButton}" Content="Clean Temp" Command="{Binding CleanTempCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Clean Cache" Margin="8,0,0,0" Command="{Binding CleanCacheCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Restore Point" Margin="8,0,0,0" Command="{Binding RestorePointCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Backup Settings" Margin="8,0,0,0" Command="{Binding BackupSettingsCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Restore Settings" Margin="8,0,0,0" Command="{Binding RestoreSettingsCommand}" />
+                            <Button Style="{StaticResource DangerButton}" Content="UNDO ALL" Margin="8,0,0,0" Command="{Binding RollbackCommand}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Changes}" Margin="0,10,0,0" MaxHeight="150">
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="ItemsControl">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="90" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Timestamp, StringFormat={}{0:HH:mm:ss}}" Style="{StaticResource Mono}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Description}" Style="{StaticResource BaseText}" TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Reverted, StringFormat=reverted: {0}}" Style="{StaticResource Caption}" HorizontalAlignment="Right" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Grid.Row="2" Text="{Binding Status}" Style="{StaticResource Caption}" Margin="0,10,0,0" TextWrapping="Wrap" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

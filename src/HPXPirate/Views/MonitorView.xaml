@@ -1,0 +1,168 @@
+<UserControl x:Class="HPXPirate.Views.MonitorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrl="clr-namespace:HPXPirate.Controls"
+             FontFamily="{StaticResource Font.Primary}">
+
+    <Grid Margin="24,20,24,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <StackPanel>
+                <TextBlock Text="Real-Time Monitor" Style="{StaticResource H1}" />
+                <TextBlock Text="Live FPS, frame time and hardware telemetry captured without touching the game process."
+                           Style="{StaticResource Caption}" Margin="0,2,0,16" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <TextBlock Text="WINDOW" Style="{StaticResource MetricLabel}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <ComboBox Style="{StaticResource HpxCombo}" Width="150" ItemsSource="{Binding Windows}" SelectedItem="{Binding WindowLabel}" />
+            </StackPanel>
+        </Grid>
+
+        <WrapPanel Grid.Row="1">
+            <Border Style="{StaticResource Card}" MinWidth="150">
+                <StackPanel>
+                    <TextBlock Text="FPS" Style="{StaticResource MetricLabel}" />
+                    <TextBlock Text="{Binding FpsText}" Style="{StaticResource MetricBig}" FontSize="30"
+                               Foreground="{StaticResource Brush.Accent.Magenta}" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" MinWidth="150">
+                <StackPanel>
+                    <TextBlock Text="FRAME TIME" Style="{StaticResource MetricLabel}" />
+                    <TextBlock Text="{Binding FrameTimeText}" Style="{StaticResource MetricBig}" FontSize="30"
+                               Foreground="{StaticResource Brush.Accent.Cyan}" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" MinWidth="150">
+                <StackPanel>
+                    <TextBlock Text="CPU" Style="{StaticResource MetricLabel}" />
+                    <TextBlock Text="{Binding CpuText}" Style="{StaticResource MetricBig}" FontSize="30" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" MinWidth="150">
+                <StackPanel>
+                    <TextBlock Text="GPU" Style="{StaticResource MetricLabel}" />
+                    <TextBlock Text="{Binding GpuText}" Style="{StaticResource MetricBig}" FontSize="30" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" MinWidth="180">
+                <StackPanel>
+                    <TextBlock Text="MEMORY" Style="{StaticResource MetricLabel}" />
+                    <TextBlock Text="{Binding RamText}" Style="{StaticResource MetricBig}" FontSize="22" />
+                </StackPanel>
+            </Border>
+        </WrapPanel>
+
+        <Grid Grid.Row="2" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,7,0">
+                <StackPanel>
+                    <TextBlock Text="FPS / FRAME TIME" Style="{StaticResource MetricLabel}" />
+                    <Grid Height="120" Margin="0,8,0,0">
+                        <ctrl:LineGraph Values="{Binding FpsSeries}" Stroke="{StaticResource Brush.Accent.Magenta}" />
+                        <ctrl:LineGraph Values="{Binding FrameTimeSeries}" Stroke="{StaticResource Brush.Accent.Cyan}" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="7,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="CPU / GPU / RAM" Style="{StaticResource MetricLabel}" />
+                    <Grid Height="120" Margin="0,8,0,0">
+                        <ctrl:LineGraph Values="{Binding CpuSeries}" Stroke="{StaticResource Brush.Accent.Magenta}" AutoScale="False" MaxValue="100" />
+                        <ctrl:LineGraph Values="{Binding GpuSeries}" Stroke="{StaticResource Brush.Accent.Cyan}" AutoScale="False" MaxValue="100" />
+                        <ctrl:LineGraph Values="{Binding RamSeries}" Stroke="{StaticResource Brush.Accent.Silver}" AutoScale="False" MaxValue="100" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="360" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Benchmark -->
+            <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,14,0">
+                <StackPanel>
+                    <TextBlock Text="BENCHMARK (BEFORE / AFTER)" Style="{StaticResource MetricLabel}" />
+                    <TextBlock Text="Capture real numbers before and after a boost. No invented figures — only what your machine measured."
+                               Style="{StaticResource Caption}" TextWrapping="Wrap" Margin="0,6,0,10" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource PrimaryButton}" Content="START" Command="{Binding StartBenchmarkCommand}" />
+                        <Button Style="{StaticResource DangerButton}" Content="STOP" Margin="10,0,0,0" Command="{Binding StopBenchmarkCommand}" />
+                    </StackPanel>
+
+                    <TextBlock Text="BEFORE" Style="{StaticResource MetricLabel}" Margin="0,14,0,4" />
+                    <StackPanel DataContext="{Binding BeforeResult}">
+                        <TextBlock Style="{StaticResource Mono}">
+                            <Run Text="Avg FPS: " /><Run Text="{Binding AverageFps, StringFormat={}{0:0.0}, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Mono}">
+                            <Run Text="1% low: " /><Run Text="{Binding OnePercentLow, StringFormat={}{0:0.0}, Mode=OneWay}" />
+                            <Run Text="   0.1% low: " /><Run Text="{Binding PointOnePercentLow, StringFormat={}{0:0.0}, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Mono}">
+                            <Run Text="Frame time: " /><Run Text="{Binding AverageFrameTimeMs, StringFormat={}{0:0.00} ms, Mode=OneWay}" />
+                        </TextBlock>
+                    </StackPanel>
+
+                    <TextBlock Text="AFTER" Style="{StaticResource MetricLabel}" Margin="0,12,0,4" />
+                    <StackPanel DataContext="{Binding AfterResult}">
+                        <TextBlock Style="{StaticResource Mono}">
+                            <Run Text="Avg FPS: " /><Run Text="{Binding AverageFps, StringFormat={}{0:0.0}, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Mono}">
+                            <Run Text="1% low: " /><Run Text="{Binding OnePercentLow, StringFormat={}{0:0.0}, Mode=OneWay}" />
+                            <Run Text="   0.1% low: " /><Run Text="{Binding PointOnePercentLow, StringFormat={}{0:0.0}, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource Mono}">
+                            <Run Text="Frame time: " /><Run Text="{Binding AverageFrameTimeMs, StringFormat={}{0:0.00} ms, Mode=OneWay}" />
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Processes -->
+            <Border Grid.Column="1" Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <TextBlock Text="TOP PROCESSES" Style="{StaticResource MetricLabel}" VerticalAlignment="Center" />
+                        <Button Style="{StaticResource GhostButton}" Content="Refresh" HorizontalAlignment="Right"
+                                Command="{Binding RefreshProcessesCommand}" />
+                    </Grid>
+                    <DataGrid Grid.Row="1" Margin="0,10,0,0" ItemsSource="{Binding Processes}"
+                              AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column"
+                              Background="Transparent" RowBackground="Transparent" AlternatingRowBackground="#0AFFFFFF"
+                              BorderThickness="0" Foreground="{StaticResource Brush.Text.Primary}"
+                              GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource Brush.Border}"
+                              FontFamily="{StaticResource Font.Primary}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Process" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="PID" Binding="{Binding Pid}" Width="70" />
+                            <DataGridTextColumn Header="CPU %" Binding="{Binding CpuPercent, StringFormat={}{0:0.0}}" Width="80" />
+                            <DataGridTextColumn Header="RAM MB" Binding="{Binding RamMb, StringFormat={}{0:0}}" Width="90" />
+                            <DataGridTextColumn Header="Priority" Binding="{Binding Priority}" Width="100" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

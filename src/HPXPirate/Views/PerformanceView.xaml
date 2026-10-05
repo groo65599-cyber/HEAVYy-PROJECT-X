@@ -1,0 +1,114 @@
+<UserControl x:Class="HPXPirate.Views.PerformanceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:models="clr-namespace:HPXPirate.Models"
+             FontFamily="{StaticResource Font.Primary}">
+
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="Modes" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:OptimizationMode" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="24,20,24,28">
+        <StackPanel>
+            <TextBlock Text="Performance Engine" Style="{StaticResource H1}" />
+            <TextBlock Text="Reversible Windows optimisations. Every change is logged and can be undone."
+                       Style="{StaticResource Caption}" Margin="0,2,0,18" />
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                            <TextBlock Text="OPTIMISATION MODE" Style="{StaticResource MetricLabel}" />
+                            <ComboBox Width="200" Margin="0,6,0,0" Style="{StaticResource HpxCombo}"
+                                      ItemsSource="{Binding Source={StaticResource Modes}}"
+                                      SelectedItem="{Binding Mode}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
+                            <CheckBox Style="{StaticResource ToggleSwitch}" Content="Create restore point before changes"
+                                      IsChecked="{Binding CreateRestorePoint}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                        <Button Style="{StaticResource PrimaryButton}" Content="APPLY OPTIMISATION" Command="{Binding ApplyCommand}" />
+                        <Button Style="{StaticResource DangerButton}" Content="ROLLBACK ALL" Margin="10,0,0,0" Command="{Binding RollbackCommand}" />
+                        <TextBlock Text="{Binding ResultText}" Style="{StaticResource Caption}" VerticalAlignment="Center" Margin="16,0,0,0" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Grid Margin="0,4,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="380" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Plan -->
+                <Border Grid.Column="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="PLANNED ACTIONS" Style="{StaticResource MetricLabel}" />
+                        <ItemsControl ItemsSource="{Binding Plan}" Margin="0,10,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource Panel}" Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <CheckBox Grid.Column="0" IsChecked="{Binding Selected}" VerticalAlignment="Top" Margin="0,2,10,0" />
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold" />
+                                                <TextBlock Text="{Binding Description}" Style="{StaticResource Caption}" />
+                                            </StackPanel>
+                                            <Border Grid.Column="2" CornerRadius="6" Padding="8,3" VerticalAlignment="Top"
+                                                    Background="#1A2BE7FF">
+                                                <TextBlock Text="{Binding Risk}" FontSize="10" FontWeight="SemiBold"
+                                                           Foreground="{StaticResource Brush.Accent.Cyan}" />
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Changes -->
+                <Border Grid.Column="1" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="CHANGE HISTORY" Style="{StaticResource MetricLabel}" />
+                        <TextBlock Text="Newest first. Reverted entries are dimmed." Style="{StaticResource Caption}" Margin="0,2,0,8" />
+                        <ItemsControl ItemsSource="{Binding Changes}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource Panel}" Margin="0,0,0,6">
+                                        <StackPanel>
+                                            <Grid>
+                                                <TextBlock Text="{Binding Category}" FontSize="12" FontWeight="SemiBold" />
+                                                <TextBlock Text="{Binding Timestamp, StringFormat={}{0:HH:mm:ss}}" HorizontalAlignment="Right"
+                                                           Style="{StaticResource Caption}" />
+                                            </Grid>
+                                            <TextBlock Text="{Binding Description}" Style="{StaticResource Caption}" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

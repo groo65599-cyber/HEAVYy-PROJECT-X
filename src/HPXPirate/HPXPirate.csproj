@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Allows building the Windows Desktop (WPF) app from non-Windows hosts -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <AssemblyName>HPXPirate</AssemblyName>
+    <RootNamespace>HPXPirate</RootNamespace>
+    <ApplicationIcon>Assets\hpx.ico</ApplicationIcon>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <UseWindowsForms>true</UseWindowsForms>
+
+    <Product>HPX PIRATE</Product>
+    <AssemblyTitle>HPX PIRATE</AssemblyTitle>
+    <Company>HPX Pirate</Company>
+    <Description>HPX PIRATE - Gaming Performance Center (Optimizer, FPS Monitor, Control Mapper, Easy Drag, Crosshair, Profiles).</Description>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Copyright>Copyright (c) 2025 HPX Pirate</Copyright>
+
+    <!-- Keep the app lightweight -->
+    <PublishSingleFile>false</PublishSingleFile>
+    <TieredPGO>true</TieredPGO>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <!-- UseWindowsForms injects global usings that clash with WPF types (UserControl,
+       Brush, Color, Point, Application, MouseEventArgs ...). Remove them; the tray
+       icon code references System.Windows.Forms with fully-qualified names. -->
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+    <Using Include="System.IO" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="8.0.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.3" />
+    <!-- Non-injection FPS capture via ETW (DxgKrnl Present events), like PresentMon. -->
+    <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\hpx_logo.png" />
+    <Resource Include="Assets\hpx.ico" />
+  </ItemGroup>
+
+  <!-- Publish defaults -->
+  <PropertyGroup>
+    <PublishDir>..\..\publish\</PublishDir>
+  </PropertyGroup>
+
+</Project>
