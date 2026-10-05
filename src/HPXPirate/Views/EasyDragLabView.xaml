@@ -1,0 +1,217 @@
+<UserControl x:Class="HPXPirate.Views.EasyDragLabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:models="clr-namespace:HPXPirate.Models"
+             xmlns:ctrl="clr-namespace:HPXPirate.Controls"
+             FontFamily="{StaticResource Font.Primary}">
+
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="Stabilizers" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:StabilizerLevel" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <Style x:Key="CtrlLabel" TargetType="TextBlock" BasedOn="{StaticResource MetricLabel}" />
+    </UserControl.Resources>
+
+    <Grid Margin="24,20,24,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Easy Drag Lab" Style="{StaticResource H1}" />
+            <TextBlock Text="Tune drag weight, stability and smoothness, then measure the real effect on your own input. No targeting, no auto-aim."
+                       Style="{StaticResource Caption}" Margin="0,2,0,16" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="430" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Controls -->
+            <Border Grid.Column="0" Style="{StaticResource Card}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <CheckBox Style="{StaticResource ToggleSwitch}" Content="Enable Easy Drag" IsChecked="{Binding Enabled}" />
+
+                        <Grid Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,12">
+                                <TextBlock Text="DRAG WEIGHT" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding DragWeight, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0.2" Maximum="2" Value="{Binding DragWeight}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,12">
+                                <TextBlock Text="DRAG SENSITIVITY" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding DragSensitivity, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0.1" Maximum="3" Value="{Binding DragSensitivity}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,12">
+                                <TextBlock Text="DRAG STABILITY" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding DragStability, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0" Maximum="1" Value="{Binding DragStability}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,12">
+                                <TextBlock Text="DRAG SMOOTHNESS" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding DragSmoothness, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0" Maximum="1" Value="{Binding DragSmoothness}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,12">
+                                <TextBlock Text="DRAG ACCELERATION" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding DragAcceleration, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0" Maximum="1" Value="{Binding DragAcceleration}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,12">
+                                <TextBlock Text="INITIAL DRAG RESPONSE" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding InitialDragResponse, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0.2" Maximum="2" Value="{Binding InitialDragResponse}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,12">
+                                <TextBlock Text="VERTICAL MULTIPLIER" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding VerticalDragMultiplier, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0.2" Maximum="2" Value="{Binding VerticalDragMultiplier}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,12">
+                                <TextBlock Text="HORIZONTAL MULTIPLIER" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding HorizontalDragMultiplier, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0.2" Maximum="2" Value="{Binding HorizontalDragMultiplier}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,12">
+                                <TextBlock Text="INPUT SMOOTHING" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding InputSmoothing, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0" Maximum="1" Value="{Binding InputSmoothing}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,12">
+                                <TextBlock Text="INPUT DEADZONE" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding InputDeadzone, StringFormat={}{0:0.00}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="0" Maximum="10" Value="{Binding InputDeadzone}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="MAX DRAG SPEED" Style="{StaticResource CtrlLabel}" />
+                                <TextBlock Text="{Binding MaxDragSpeed, StringFormat={}{0:0}}" Style="{StaticResource Mono}" />
+                                <Slider Style="{StaticResource HpxSlider}" Minimum="100" Maximum="5000" Value="{Binding MaxDragSpeed}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock Text="MICRO-MOVEMENT STABILIZER" Style="{StaticResource CtrlLabel}" />
+                                <ComboBox Style="{StaticResource HpxCombo}" Margin="0,6,0,0"
+                                          ItemsSource="{Binding Source={StaticResource Stabilizers}}"
+                                          SelectedItem="{Binding MicroMovementStabilizer}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="PRESETS" Style="{StaticResource MetricLabel}" Margin="0,16,0,6" />
+                        <WrapPanel>
+                            <Button Style="{StaticResource GhostButton}" Content="Light" Margin="0,0,6,6" Command="{Binding LightCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Balanced" Margin="0,0,6,6" Command="{Binding BalancedCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Stable" Margin="0,0,6,6" Command="{Binding StableCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Fast Drag" Margin="0,0,6,6" Command="{Binding FastDragCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Precision" Margin="0,0,6,6" Command="{Binding PrecisionCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Custom" Margin="0,0,6,6" Command="{Binding CustomCommand}" />
+                        </WrapPanel>
+
+                        <TextBlock Text="AIM FEEL (input consistency)" Style="{StaticResource MetricLabel}" Margin="0,10,0,6" />
+                        <WrapPanel>
+                            <Button Style="{StaticResource GhostButton}" Content="Light" Margin="0,0,6,6" Command="{Binding AimLightCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Smooth" Margin="0,0,6,6" Command="{Binding AimSmoothCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Stable" Margin="0,0,6,6" Command="{Binding AimStableCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Responsive" Margin="0,0,6,6" Command="{Binding AimResponsiveCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Precision" Margin="0,0,6,6" Command="{Binding AimPrecisionCommand}" />
+                        </WrapPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                            <Button Style="{StaticResource PrimaryButton}" Content="APPLY" Command="{Binding ApplyCommand}" />
+                            <Button Style="{StaticResource GhostButton}" Content="Reset Lab" Margin="10,0,0,0" Command="{Binding ResetLabCommand}" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Status}" Style="{StaticResource Caption}" Margin="0,12,0,0" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Lab -->
+            <Grid Grid.Column="1" Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="TEST AREA — hold the left mouse button and drag inside the box" Style="{StaticResource MetricLabel}" />
+                        <Border x:Name="DragPad" Margin="0,10,0,0" Height="220" CornerRadius="12"
+                                Background="#FF0A0812" BorderBrush="{StaticResource Brush.Border.Glow}" BorderThickness="1"
+                                ClipToBounds="True" Cursor="Cross">
+                            <Grid>
+                                <TextBlock Text="DRAG HERE" Foreground="#33FFFFFF" FontSize="22" FontWeight="Bold"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <Canvas x:Name="PadCanvas" ClipToBounds="True">
+                                    <Ellipse x:Name="PadDot" Width="10" Height="10" Fill="{StaticResource Brush.Accent.Magenta}" />
+                                </Canvas>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <WrapPanel Grid.Row="1" Margin="0,14,0,0">
+                    <Border Style="{StaticResource Card}" MinWidth="150">
+                        <StackPanel>
+                            <TextBlock Text="STABILITY (AFTER)" Style="{StaticResource MetricLabel}" />
+                            <TextBlock Text="{Binding Stability, StringFormat={}{0:0}}" Style="{StaticResource MetricBig}" FontSize="28"
+                                       Foreground="{StaticResource Brush.Ok}" />
+                            <TextBlock Text="{Binding BeforeStability, StringFormat=before {0:0}}" Style="{StaticResource Caption}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" MinWidth="150">
+                        <StackPanel>
+                            <TextBlock Text="SMOOTHNESS (AFTER)" Style="{StaticResource MetricLabel}" />
+                            <TextBlock Text="{Binding Smoothness, StringFormat={}{0:0}}" Style="{StaticResource MetricBig}" FontSize="28"
+                                       Foreground="{StaticResource Brush.Accent.Cyan}" />
+                            <TextBlock Text="{Binding BeforeSmoothness, StringFormat=before {0:0}}" Style="{StaticResource Caption}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" MinWidth="150">
+                        <StackPanel>
+                            <TextBlock Text="RESPONSE" Style="{StaticResource MetricLabel}" />
+                            <TextBlock Text="{Binding ResponseLabel}" Style="{StaticResource MetricBig}" FontSize="24"
+                                       Foreground="{StaticResource Brush.Accent.Magenta}" />
+                            <TextBlock Text="{Binding Distance, StringFormat=travel {0:0} px}" Style="{StaticResource Caption}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource Card}" MinWidth="150">
+                        <StackPanel>
+                            <TextBlock Text="RAW → PROCESSED" Style="{StaticResource MetricLabel}" />
+                            <TextBlock Text="{Binding RawMagnitude, StringFormat={}{0:0.0}}" Style="{StaticResource Mono}" />
+                            <TextBlock Text="{Binding ProcessedMagnitude, StringFormat=→ {0:0.0}}" Style="{StaticResource Mono}"
+                                       Foreground="{StaticResource Brush.Accent.Magenta}" />
+                            <TextBlock Text="{Binding Speed, StringFormat={}{0:0} px/s}" Style="{StaticResource Caption}" />
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+
+                <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,14,0,0">
+                    <StackPanel>
+                        <TextBlock Text="INPUT TRACE — raw (grey) vs processed (magenta)" Style="{StaticResource MetricLabel}" />
+                        <Grid Height="140" Margin="0,10,0,0">
+                            <ctrl:LineGraph Values="{Binding RawSeries}" Stroke="#55FFFFFF" AutoScale="False" MaxValue="100" />
+                            <ctrl:LineGraph Values="{Binding ProcessedSeries}" Stroke="{StaticResource Brush.Accent.Magenta}" AutoScale="False" MaxValue="100" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

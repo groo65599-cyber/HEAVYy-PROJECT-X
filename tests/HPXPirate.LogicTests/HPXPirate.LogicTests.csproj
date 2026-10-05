@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Headless logic test harness. It compiles ONLY the platform-independent parts of
+    HPX PIRATE (models, JSON persistence, settings, profiles, drag maths, analyzers)
+    so they can be exercised on any OS (including the Linux build host). The WPF UI
+    and Windows-only services are intentionally excluded.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>HPXPirate.LogicTests</AssemblyName>
+    <RootNamespace>HPXPirate.LogicTests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\HPXPirate\Models\Settings.cs" Link="Linked\Models\Settings.cs" />
+    <Compile Include="..\..\src\HPXPirate\Models\GameProfile.cs" Link="Linked\Models\GameProfile.cs" />
+    <Compile Include="..\..\src\HPXPirate\Models\PerformanceMetrics.cs" Link="Linked\Models\PerformanceMetrics.cs" />
+    <Compile Include="..\..\src\HPXPirate\Models\Optimization.cs" Link="Linked\Models\Optimization.cs" />
+
+    <Compile Include="..\..\src\HPXPirate\Services\JsonHelper.cs" Link="Linked\Services\JsonHelper.cs" />
+    <Compile Include="..\..\src\HPXPirate\Services\LoggingService.cs" Link="Linked\Services\LoggingService.cs" />
+    <Compile Include="..\..\src\HPXPirate\Services\AppPaths.cs" Link="Linked\Services\AppPaths.cs" />
+    <Compile Include="..\..\src\HPXPirate\Services\SettingsService.cs" Link="Linked\Services\SettingsService.cs" />
+    <Compile Include="..\..\src\HPXPirate\Services\ProfileManager.cs" Link="Linked\Services\ProfileManager.cs" />
+    <Compile Include="..\..\src\HPXPirate\Services\DragEngine.cs" Link="Linked\Services\DragEngine.cs" />
+    <Compile Include="..\..\src\HPXPirate\Services\FpsAnalyzer.cs" Link="Linked\Services\FpsAnalyzer.cs" />
+    <Compile Include="..\..\src\HPXPirate\Services\BottleneckAnalyzer.cs" Link="Linked\Services\BottleneckAnalyzer.cs" />
+    <Compile Include="..\..\src\HPXPirate\Services\HistoryBuffer.cs" Link="Linked\Services\HistoryBuffer.cs" />
+  </ItemGroup>
+
+</Project>
